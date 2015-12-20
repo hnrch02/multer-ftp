@@ -1,0 +1,20 @@
+{
+  "name": "multer-ftp",
+  "version": "1.0.0",
+  "description": "FTP storage engine for multer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "multer",
+    "ftp"
+  ],
+  "author": "Heinrich Fenkart <hnrch02@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "ftp": "^0.3.10",
+    "lodash.defaults": "^3.1.2"
+  }
+}
