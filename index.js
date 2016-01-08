@@ -15,12 +15,18 @@ function FTPStorage (opts) {
     basepath: '',
     destination: getDestination
   })
-  this.ftp = new FTP()
-  this.ready = new Promise(function (resolve, reject) {
-    this.ftp.on('ready', resolve)
-  }.bind(this))
 
-  this.ftp.connect(this.opts.ftp)
+  if (this.opts.connection) {
+    this.ftp = this.opts.connection
+    this.ready = Promise.resolve()
+  } else {
+    this.ftp = new FTP()
+    this.ready = new Promise(function (resolve, reject) {
+      this.ftp.on('ready', resolve)
+    }.bind(this))
+
+    this.ftp.connect(this.opts.ftp)
+  }
 }
 
 FTPStorage.prototype._handleFile = function _handleFile (req, file, cb) {

@@ -33,6 +33,30 @@ For more FTP connection options see [`ftp` module `connect` method](https://gith
 
 ---
 
+You can also use an existing instance of `ftp` instead of `multer-ftp` creating a new one: (added in v1.1)
+
+```javascript
+var multer = require('multer')
+var FTPStorage = require('multer-ftp')
+var FTP = require('ftp')
+var ftp = new FTP()
+
+ftp.connect({
+  host: 'example.com',
+  user: 'user',
+  password: 'password'
+})
+
+var upload = multer({
+  storage: new FTPStorage({
+    basepath: '/remote/path',
+    connection: ftp
+  })
+})
+```
+
+---
+
 By default random filenames are chosen (`crypto.randomBytes`), you can change this behavior however by using a custom `destination` function:
 
 ```javascript
