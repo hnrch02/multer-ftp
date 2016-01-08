@@ -1,6 +1,6 @@
 {
   "name": "multer-ftp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "FTP storage engine for multer",
   "main": "index.js",
   "scripts": {
