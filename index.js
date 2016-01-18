@@ -30,19 +30,35 @@ function FTPStorage (opts) {
 }
 
 FTPStorage.prototype._handleFile = function _handleFile (req, file, cb) {
-  this.ready.then(function () {
-    this.opts.destination(req, file, this.opts, function (err, destination) {
+  var instance = this
+
+  function handleFile (stream) {
+    instance.opts.destination(req, file, instance.opts, function (err, destination) {
       if (err) return cb(err)
 
-      this.ftp.put(file.stream, destination, function (err) {
+      instance.ftp.put(stream, destination, function (err) {
         if (err) return cb(err)
 
         cb(null, {
           path: destination
         })
       })
-    }.bind(this))
-  }.bind(this))
+    })
+  }
+
+  instance.ready.then(function () {
+    if (instance.opts.transformFile) {
+      instance.opts.transformFile(req, file, function (err, stream) {
+        if (err) return cb(err)
+
+        file.transformedStream = stream
+
+        handleFile(file.transformedStream)
+      })
+    } else {
+      handleFile(file.stream)
+    }
+  })
 }
 
 FTPStorage.prototype._removeFile = function _removeFile(req, file, cb) {
